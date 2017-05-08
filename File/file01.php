@@ -1,6 +1,6 @@
 <?php
 /**
- * 01：读取一个txt文件然后写入cookie
+ * 01：读取一个txt文件然后echo出来
  * User: caisen
  * Date: 2017/4/4
  * Time: 14:42
