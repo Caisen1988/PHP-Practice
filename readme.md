@@ -2,7 +2,8 @@
 ### 01.File文件操作
 * file01.php:读取一个txt文件然后echo出来
 ### 02.Array 数组操作
-* array01：二维数据排序array_multisort用法
+* 01：二维数据排序array_multisort用法
+* 02：去掉数组中的空值和false和‘’
 ### 03.正则
 * [最通俗易懂的php正则表达式教程(上)](http://www.tuicool.com/articles/EZ3myu)
 
