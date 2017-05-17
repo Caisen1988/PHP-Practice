@@ -32,10 +32,29 @@ if (preg_match($preg,$str,$arr)) {
 	//echo "no";
 }
 
-//用户名只能由英文字母a～z(不区分大小写)、数字0～9、下划线组成。
-//用户名的起始字符必须是英文字母.如：netease_2005用户名长度为5～20个字符;
-//服务器名只能由英文字母a～z(不区分大小写)、数字0～9、下划线及点组成,@后点前面长度限制为1-10个字符,点后面的限制为com,cn,com.cn,net。
-$email='wjj7r8y6@jj.net';
-if(ereg("^[a-zA-Z][0-9a-zA-Z_]{4,19}@[0-9a-zA-Z_]{1,10}(\.)(com|cn|com.cn|net)$",$email)) {
-		echo 'email格式正确';
+//需要匹配的字符串。date函数返回当前时间
+$content = "Current date and time is ".date("Y-m-d h:i a").", we are learning PHP together.";
+
+//使用通常的方法匹配时间
+if (preg_match ('/\d{4}-\d{2}-\d{2} \d{2}:\d{2} [ap]m/', $content, $m))
+{
+    //echo "匹配的时间是：" .$m[0]. "\n";
 }
+
+//由于时间的模式明显，也可以简单的匹配
+if (preg_match ('/([\d-]{10}) ([\d:]{5} [ap]m)/', $content, $m))
+{
+    //echo "当前日期是：" .$m[1]. "\n";
+    //echo "当前时间是：" .$m[2]. "\n";
+}
+
+//Preg_grep()函数返回一个数组,其中包括了$input数组中与给定的$pattern模式相匹配的单元。对于输入数组$input中的每个元素，preg_grep()也只进行一次匹配。
+$subjects = array(
+    "Mechanical Engineering",  "Medicine",
+    "Social Science",          "Agriculture",
+    "Commercial Science",     "politics"
+);
+
+//匹配所有仅由有一个单词组成的科目名
+$alonewords = preg_grep("/^[a-z]*$/i", $subjects);
+print_r($alonewords);
