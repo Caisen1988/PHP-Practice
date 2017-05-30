@@ -29,7 +29,7 @@ $outputfile = $argv[2];
 output($file);
 ```
 > 命令行下面使用方法  php output.php  input.txt output.txt
- 
+
 ### 02.Array 数组操作
 * 01：二维数据排序array_multisort用法
 * 02：去掉数组中的空值和false和‘’
@@ -41,3 +41,19 @@ output($file);
 * [最通俗易懂的php正则表达式教程(下)](http://www.tuicool.com/articles/nMn2yeU)
 
 ### 04.OOP
+
+### 05.empyt 与 isset
+
+```
+$myvar = NULL; isset($myvar); //  FALSE 当一个变量被赋值为NULL时，就表示这个变量没有值
+$myvar = 0; isset($myvar);     //   TRUE
+$myvar = FALSE; isset($myvar); // TRUE
+$myvar = '';  isset($myvar); //  TRUE
+isset($some_undefined_var); //  FALSE Undefined variable
+
+$myvar = NULL; empty($myvar); // TRUE
+$myvar = 0; empty($myvar); // TRUE
+$myvar = FALSE; empty($myvar); // TRUE
+$myvar = '';  empty($myvar); // TRUE
+empty($some_undefined_var); // TRUE
+```
