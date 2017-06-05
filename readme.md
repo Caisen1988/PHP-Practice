@@ -57,3 +57,7 @@ $myvar = FALSE; empty($myvar); // TRUE
 $myvar = '';  empty($myvar); // TRUE
 empty($some_undefined_var); // TRUE
 ```
+
+### 06.设计模式
+
+#### 6.1 工厂模式
