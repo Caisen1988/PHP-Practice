@@ -1,13 +1,17 @@
 <?php
 /*
-数据操作类
+数据操作类基于PDO
 */
 
 
 abstract class MysqlClass
 {
-    protected $sen;
-    protected $m_tableName;
+    $dbms='mysql';     //数据库类型
+    $host='localhost'; //数据库主机名
+    $dbName='test';    //使用的数据库
+    $user='root';      //数据库连接用户名
+    $pass='root';          //对应的密码
+    $dsn="$dbms:host=$host;dbname=$dbName";
 
     public function __construct(){
         //connect to DB:
