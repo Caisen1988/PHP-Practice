@@ -2,8 +2,6 @@
 /*
 数据操作类基于PDO
 */
-
-
 abstract class MysqlClass
 {
     $dbms='mysql';     //数据库类型

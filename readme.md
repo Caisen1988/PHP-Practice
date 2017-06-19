@@ -56,6 +56,26 @@ $outputfile = $argv[2];
 //开始导入
 output($inputfile,$outputfile);
 ```
+
+* 将php数组导入csv文件
+
+```
+function outPutCsv() {
+    $arr_data = array();//
+    $fp = fopen('gameList.csv', 'w');//w为可写权限
+
+    foreach ($arr_data as $key => $value) {
+        $name = $value['name'];
+        $appid = $value['appid'];
+        $short = $value['short'];
+        fputcsv($fp, array('name' => $name, 'appid' => $appid, 'short' => $short));
+    }
+    fclose($fp);
+}
+
+outPutCsv();
+```
+
 > 命令行下面使用方法  php output.php  input.txt output.txt
 
 ### 03.Array 数组操作
