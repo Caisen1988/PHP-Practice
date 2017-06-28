@@ -18,6 +18,12 @@ $myvar = '';  empty($myvar); // TRUE
 empty($some_undefined_var); // TRUE
 ```
 
+#### 1.2 数组的错误
+
+```
+$this->area = Util::load_game_api('sgame')->convertArea($this->area, $this->partition);
+```
+
 ### 02.File文件操作
 * file01.php:读取一个txt文件然后echo出来
 ```
