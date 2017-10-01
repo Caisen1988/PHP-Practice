@@ -100,7 +100,9 @@ outPutCsv();
 
 * oop02.php: __get(), __set(), __isset() and __unset()用法。
 
-* oop03.php: 构造函数和析构函数用法。
+* oop03.php: 构造函数和析构函数用法
+
+* ooP04.php: 属性的继承
 
 
 ### 06.设计模式
