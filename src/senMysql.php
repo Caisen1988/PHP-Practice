@@ -1,42 +1,51 @@
 <?php
+
 /*
 数据操作类基于PDO
 */
+
 abstract class MysqlClass
 {
-    $dbms='mysql';     //数据库类型
-    $host='localhost'; //数据库主机名
-    $dbName='test';    //使用的数据库
-    $user='root';      //数据库连接用户名
-    $pass='root';          //对应的密码
-    $dsn="$dbms:host=$host;dbname=$dbName";
+    //数据库类型
+    private $dbms = 'mysql';
+    //数据库主机名
+    private $host = 'localhost';
+    //使用的数据库
+    private $dbName = 'test';
+    //数据库连接用户名
+    private $user = 'root';
+    //对应的密码
+    private $pass = 'root';
 
-    public function __construct(){
+    public function __construct()
+    {
         //connect to DB:
 
     }
 
-    public function getAll() {
+    public function getAll()
+    {
         $sql = "select * from {$this->m_tableName}";
         $result = array();
-        $this->sen-ExecQuery($sql, $result);
+        $this->sen - ExecQuery($sql, $result);
         return $result;
     }
 
-    protected function filterParameters($param, $filterType = 1) {
+    protected function filterParameters($param, $filterType = 1)
+    {
 
         if (is_array($param)) {
             foreach ($param as $k => $v) {
                 $param[$k] = $this->filterParameters($v, $filterType);
             }
         } elseif (is_string($param)) {
-            if($filterType == 1) {
+            if ($filterType == 1) {
                 $param = htmlspecialchars($param);
                 // 过滤引号
                 $trans = array(
                     "'" => '&apos;'
                 );
-                $param = strtr($param,$trans);
+                $param = strtr($param, $trans);
             } else {
                 $param = addslashes($param);
             }
@@ -45,10 +54,11 @@ abstract class MysqlClass
         return $param;
     }
 
-    public function getByPrimaryKey($arrPrimaryKey=array()) {
+    public function getByPrimaryKey($arrPrimaryKey = array())
+    {
         $sql = "SELECT * FROM " . $this->m_tableName . " WHERE 1 = 1";
-        foreach($arrPrimaryKey as $field => $value){
-            $sql .= " AND " . $field . " = '" . $value  . "'";
+        foreach ($arrPrimaryKey as $field => $value) {
+            $sql .= " AND " . $field . " = '" . $value . "'";
         }
         $result = array();
         $this->sen->ExecQuery($sql, $result);
@@ -56,17 +66,18 @@ abstract class MysqlClass
         return $result;
     }
 
-    public function updateByPrimaryKey($arrPrimaryKey, $data, $filterType = 1) {
+    public function updateByPrimaryKey($arrPrimaryKey, $data, $filterType = 1)
+    {
 
         $data = $this->filterParameters($data, $filterType);
         $updateData = array();
-        foreach($data as $field => $value){
+        foreach ($data as $field => $value) {
             $updateData[] = $field . " = '" . $value . "'";
         }
 
         $sql = "UPDATE " . $this->m_tableName . " SET " . implode(", ", $updateData) . " WHERE 1 = 1";
-        foreach($arrPrimaryKey as $field => $value){
-            $sql .= " AND " . $field . " = '" . $value  . "'";
+        foreach ($arrPrimaryKey as $field => $value) {
+            $sql .= " AND " . $field . " = '" . $value . "'";
         }
 
         if ($this->sen->ExecUpdate($sql) >= 0) {
@@ -80,14 +91,15 @@ abstract class MysqlClass
 
     /**
      * 根据主键ID获取详细信息（通用函数）
-     * @param array  $primaryArr('id',123)
+     * @param array $primaryArr ('id',123)
      * @author  jaspersong
      */
-    public function getActInfoById($primaryArr=array()){
+    public function getActInfoById($primaryArr = array())
+    {
         $this->writeLog(__FILE__, __LINE__, LP_DEBUG, "EXEC " . __METHOD__ . " \n");
-        if (!empty($primaryArr)){
+        if (!empty($primaryArr)) {
             $sql = "SELECT * FROM `{$this->m_tableName}` WHERE `{$primaryArr[0]}`='{$primaryArr[1]}'";
-        }else {
+        } else {
             $sql = "SELECT * FROM `{$this->m_tableName}` WHERE 1";
         }
         $this->writeLog(__FILE__, __LINE__, LP_DEBUG, "SQL: " . $sql . "\n");
@@ -108,7 +120,8 @@ abstract class MysqlClass
      * @since  2015-9-17
      * @author jaspersong
      */
-    public function delColumnById($primaryArr=array()){
+    public function delColumnById($primaryArr = array())
+    {
         $this->writeLog(__FILE__, __LINE__, LP_DEBUG, "EXEC " . __METHOD__ . " \n");
         $sql = "DELETE FROM `{$this->m_tableName}` WHERE `{$primaryArr[0]}` = '{$primaryArr[1]}'";
         $this->writeLog(__FILE__, __LINE__, LP_DEBUG, "SQL: " . $sql . "\n");
@@ -122,7 +135,8 @@ abstract class MysqlClass
      * @since 2015-9-14
      * @author jaspersong
      */
-    public function updateColumnByIds($primaryArr=array(), $data=array()){
+    public function updateColumnByIds($primaryArr = array(), $data = array())
+    {
         $data = $this->filterParameters($data);
         $keys = array_keys($data);
         $values = array_values($data);
@@ -130,7 +144,7 @@ abstract class MysqlClass
             $v = '`' . $v . '`';
         }
         foreach ($values as &$v) {
-            if( $v != 'NOW()' ){
+            if ($v != 'NOW()') {
                 $v = '"' . $v . '"';
             }
         }
@@ -140,7 +154,7 @@ abstract class MysqlClass
         }
         $setStr = substr($setStr, 0, -1);
 
-        $sql = 'UPDATE `' . $this->m_tableName . '` SET ' . $setStr . ' WHERE `'.$primaryArr[0].'`="'.$primaryArr[1].'"';
+        $sql = 'UPDATE `' . $this->m_tableName . '` SET ' . $setStr . ' WHERE `' . $primaryArr[0] . '`="' . $primaryArr[1] . '"';
         $this->writeLog(__FILE__, __LINE__, LP_DEBUG, "SQL: " . $sql . "\n");
         $ret = $this->dao->ExecUpdate($sql);
         if ($ret >= 0) {
@@ -151,7 +165,8 @@ abstract class MysqlClass
         }
     }
 
-    public function insertColumn($data = array(), $filterType = 1){
+    public function insertColumn($data = array(), $filterType = 1)
+    {
         $data = $this->filterParameters($data, $filterType);
         $keys = array_keys($data);
         $values = array_values($data);
@@ -159,7 +174,7 @@ abstract class MysqlClass
             $v = '`' . $v . '`';
         }
         foreach ($values as &$v) {
-           if( $v != 'NOW()' ){
+            if ($v != 'NOW()') {
                 $v = '"' . $v . '"';
             }
         }
@@ -176,9 +191,10 @@ abstract class MysqlClass
         }
     }
 
-    public function batchInsert($data, $filterType = 1) {
+    public function batchInsert($data, $filterType = 1)
+    {
 
-        if(!is_array($data) || !$data) {
+        if (!is_array($data) || !$data) {
             return false;
         }
 
@@ -187,13 +203,13 @@ abstract class MysqlClass
         $arrField = array_keys($data[0]);
         $arrValue = array();
 
-        foreach($arrField as $k => $field) {
+        foreach ($arrField as $k => $field) {
             $field = '`' . trim($field) . '`';
             $arrField[$k] = $field;
         }
 
-        foreach($data as $value) {
-            foreach($value as $filed => $v) {
+        foreach ($data as $value) {
+            foreach ($value as $filed => $v) {
                 $v = trim($v);
                 $v !== 'NOW()' && $v = '"' . $v . '"';
                 $value[$filed] = $v;
@@ -217,20 +233,21 @@ abstract class MysqlClass
      * @param int $filterType
      * @return bool
      * example
-          $data = array(
-              array(
-                  'iApplyId' => 1,
-                  'dtCreateTime' => date('Y-m-d H:i:s')
-              ).
-              array(
-                  'iApplyId' => 2,
-                  'dtCreateTime' => date('Y-m-d H:i:s')
-              )
-          );
+     * $data = array(
+     * array(
+     * 'iApplyId' => 1,
+     * 'dtCreateTime' => date('Y-m-d H:i:s')
+     * ).
+     * array(
+     * 'iApplyId' => 2,
+     * 'dtCreateTime' => date('Y-m-d H:i:s')
+     * )
+     * );
      */
-    public function batchReplace($data, $filterType = 1) {
+    public function batchReplace($data, $filterType = 1)
+    {
 
-        if(!is_array($data) || !$data) {
+        if (!is_array($data) || !$data) {
             return false;
         }
 
@@ -239,13 +256,13 @@ abstract class MysqlClass
         $arrField = array_keys($data[0]);
         $arrValue = array();
 
-        foreach($arrField as $k => $field) {
+        foreach ($arrField as $k => $field) {
             $field = '`' . trim($field) . '`';
             $arrField[$k] = $field;
         }
 
-        foreach($data as $value) {
-            foreach($value as $filed => $v) {
+        foreach ($data as $value) {
+            foreach ($value as $filed => $v) {
                 $v = trim($v);
                 $v !== 'NOW()' && $v = '"' . $v . '"';
                 $value[$filed] = $v;
